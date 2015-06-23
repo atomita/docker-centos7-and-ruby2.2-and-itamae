@@ -27,7 +27,7 @@ fi" >> /etc/profile.d/anyenv.sh
 RUN bash -l -c 'anyenv install rbenv'
 
 ## Install ruby
-ENV RUBY_VERSION 2.2.2
+ENV RUBY_VERSION 2.2.0
 RUN bash -l -c 'echo "ruby" "$RUBY_VERSION"'
 RUN bash -l -c 'CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$RUBY_VERSION" && rbenv global "$RUBY_VERSION"'
  
