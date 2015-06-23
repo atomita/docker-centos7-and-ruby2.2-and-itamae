@@ -13,9 +13,6 @@ RUN yum -y install\
 
 ENV DOCKER_USER docker
 
-# Default var
-ENV DEFAULT_RUBY_VERSION 2.2.2
-
 
 # Install anyenv
 RUN git clone https://github.com/riywo/anyenv .anyenv
@@ -26,26 +23,18 @@ if [ -d /.anyenv ]; then\n\
 	eval \"\$(anyenv init -)\"\n\
 fi" >> /etc/profile.d/anyenv.sh
 
-# Set ruby version
-COPY .ruby-version ./
-RUN echo -e "\n\n## ruby version\n\
-if [ -f /.ruby-version ]; then\n\
-	export RUBY_VERSION=`cat /.ruby-version`\n\
-else\n\
-	export RUBY_VERSION=$DEFAULT_RUBY_VERSION\n\
-fi" >> /etc/profile.d/ruby-version.sh
-
 ## Install rbenv
 RUN bash -l -c 'anyenv install rbenv'
 
 ## Install ruby
-#RUN bash -l -c 'echo "ruby" "$RUBY_VERSION"'
-#RUN bash -l -c 'rbenv install "$RUBY_VERSION" && rbenv global "$RUBY_VERSION"'
-# 
-## Install bundler and itamae
-#RUN bash -l -c 'gem install bundler'
-#RUN bash -l -c 'gem install itamae'
-#RUN bash -l -c 'rbenv rehash'
+ENV RUBY_VERSION 2.2.2
+RUN bash -l -c 'echo "ruby" "$RUBY_VERSION"'
+RUN bash -l -c 'CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$RUBY_VERSION" && rbenv global "$RUBY_VERSION"'
+ 
+# Install bundler and itamae
+RUN bash -l -c 'gem install bundler'
+RUN bash -l -c 'gem install itamae'
+RUN bash -l -c 'rbenv rehash'
 
 
 # Create user
