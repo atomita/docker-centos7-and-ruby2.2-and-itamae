@@ -40,13 +40,13 @@ RUN bash -l -c 'rbenv rehash'
 # Create user
 RUN  adduser $DOCKER_USER
 
+# anyenv own to DOCKER_USER
+RUN chown $DOCKER_USER:$DOCKER_USER -R /.anyenv
+
 # Change user
 USER $DOCKER_USER
 WORKDIR /home/$DOCKER_USER
 ENV HOME /home/$DOCKER_USER
 
-ADD . ./
-
 
 USER root
-RUN chown $DOCKER_USER:$DOCKER_USER -R /home/$DOCKER_USER
