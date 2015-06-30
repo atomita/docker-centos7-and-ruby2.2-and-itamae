@@ -11,9 +11,6 @@ RUN yum -y install\
 	libffi-devel
 
 
-ENV DOCKER_USER docker
-
-
 # Install anyenv
 RUN git clone https://github.com/riywo/anyenv .anyenv
 RUN echo -e "\n\n## anyenv\n\
@@ -37,16 +34,4 @@ RUN bash -l -c 'gem install itamae'
 RUN bash -l -c 'rbenv rehash'
 
 
-# Create user
-RUN  adduser $DOCKER_USER
-
-# anyenv own to DOCKER_USER
-RUN chown $DOCKER_USER:$DOCKER_USER -R /.anyenv
-
-# Change user
-USER $DOCKER_USER
-WORKDIR /home/$DOCKER_USER
-ENV HOME /home/$DOCKER_USER
-
-
-USER root
+WORKDIR /var/app/current
